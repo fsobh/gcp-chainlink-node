@@ -1,6 +1,6 @@
 GCP Chainlink Node Security Hardened
 
-This guide is intended to provide additional technical literature to reference the official Chainlink documentation.
+This guide is intended to provide additional technical guidance to reference the official Chainlink documentation.
 
 [1] https://docs.chain.link/docs/enabling-https-connections/
 
