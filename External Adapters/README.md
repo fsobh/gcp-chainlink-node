@@ -9,7 +9,8 @@ Within the GCP GUI, navigate to the hamburger menu button, Serverless category, 
 ### 1.1 Create External Adapter
 Create ```function```, choose a ```function name```, ```region``` close to or on the same region of your Chainlink Node VM, and ```allow unauthenticated invocations```, ```save``` and then ```next```. 
 
-![image](https://user-images.githubusercontent.com/100059207/154829213-018dfaac-056d-4a24-b071-53e2d6ea4371.png)
+![154829213-018dfaac-056d-4a24-b071-53e2d6ea4371](https://user-images.githubusercontent.com/100059207/154830706-5a9ea23d-544a-4b98-a422-728794baabe7.png)
+
 
 Copy the ```URL``` reserved for this external adapter. This will be used to test the external adapter after creation.
 
