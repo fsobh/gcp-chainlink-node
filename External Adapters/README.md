@@ -46,7 +46,7 @@ Paste the code below into the Job Spec TOML blob field in the chainlink node new
 ```
 type = "webhook"
 schemaVersion = 1
-name = "ethusd-coingecko-failover-cryptocompare-adapter"
+name = "ethusd-coingecko-failover-coinpaprika-adapter"
 observationSource = """
 fetch_1       [type=bridge name="coingecko-ethusd-failover-coinpaprika-adapter" requestData="{\\"id\\": $(jobSpec.externalJobID)}"]
 parse_1       [type=jsonparse path="data,price" data="$(fetch_1)"]
