@@ -1,10 +1,130 @@
-GCP Chainlink Node Security Hardened
+# GCP Chainlink Node with security hardened infrastructure
 
-This guide is intended to provide additional technical guidance to reference the official Chainlink documentation.
+This guide is intended to work in conjunction with the OpenVPN Access Server guide which should be done before setup of the Chainlink node itself.
+This guide operates a chainlink node ```v1.1.0``` (latest at time of writing) with failover which has TLS enabled, local Ethereum node with remote Ethereum node as failover.
 
+## [0] Requirements
+(1) VMs intended to run Chainlink node service has access to the internet
+
+(2) postgreSQL Server setup with associated user and database
+
+## [1] Setup basic Chainlink Node with local Ethereum Node
+
+### 1.0 SSH into VM for Chainlink node service
+Login via google cloud SDK
+```
+gcloud auth login
+gcloud config set project project-id
+gcloud compute ssh node --project "project-id" --zone "us-west1-b" --tunnel-through-iap -- -L 6688:localhost:6688
+```
+### 1.1 Update & Prepare VM for Chainlink node service
+```
+sudo apt-get update && sudo apt-get upgrade -y
+sudo apt-get install nano && sudo apt-get install apache2 -y
+sudo service apache2 restart
+curl -sSL https://get.docker.com/ | sh
+sudo usermod -aG docker $USER
+exit
+```
+### 1.2 Run and sync local Ethereum Node
+```
+docker run --name eth_node -d --restart unless-stopped -p 8546:8546 -v ~/.geth-rinkeby:/geth -it \
+           ethereum/client-go --mainnet --ws --ipcdisable \
+           --ws.addr 0.0.0.0 --ws.origins="*" --datadir /geth --syncmode full --rpc.gascap=0 --rpc.txfeecap=0
+```
+If concerned about disk usage, check total disk usage by
+```
+sudo df -h
+```
+### 1.3 Install Chainlink Node
+Create local directory to hold chainlink data
+```
+mkdir ~/.chainlink
+```
+Create environment (.env) file
+```
+echo "ROOT=/chainlink
+LOG_LEVEL=debug
+ETH_CHAIN_ID=1
+CHAINLINK_TLS_PORT=0
+SECURE_COOKIES=false
+ALLOW_ORIGINS=*" > ~/.chainlink/.env
+```
+Set Ethereum Client URL
+```
+ETH_CONTAINER_IP=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' $(docker ps -f name=eth -q))
+echo "ETH_URL=ws://$ETH_CONTAINER_IP:8546" >> ~/.chainlink/.env
+```
+Set Database URL
+```
+echo "DATABASE_URL=postgresql://$USERNAME:$PASSWORD@$SERVER:$PORT/$DATABASE" >> ~/.chainlink/.env
+```
+Start the Chainlink node
+```
+cd ~/.chainlink && docker run -p 6688:6688 -v ~/.chainlink:/chainlink -it --env-file=.env smartcontract/chainlink:1.1.0 local n
+```
+Confirm keystore password, GUI email and associated password
+Stop the Chainlink node services with keyboard command: ```<CTRL+C>```
+### 1.4 Setup auto login process for Chainlink Node
+```
+echo "<GUI EMAIL>" > ~/.chainlink/.api
+echo "password" >> ~/.chainlink/.api
+echo "<keystore password>" > ~/.chainlink/.password
+```
+Test the auto login setup
+```
+cd ~/.chainlink && docker run -p 6688:6688 -v ~/.chainlink:/chainlink -it --env-file=.env smartcontract/chainlink:1.1.0 local n -p /chainlink/.password -a /chainlink/.api
+```
+Login to Chainlink node GUI:
+http://localhost:6688
+### 1.5 Enabling HTTPS Connections
+```
+mkdir ~/.chainlink/tls
+openssl req -x509 -out  ~/.chainlink/tls/server.crt  -keyout ~/.chainlink/tls/server.key \
+  -newkey rsa:2048 -nodes -sha256 -days 365 \
+  -subj '/CN=localhost' -extensions EXT -config <( \
+   printf "[dn]\nCN=localhost\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:localhost\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth")
+echo "TLS_CERT_PATH=/chainlink/tls/server.crt
+TLS_KEY_PATH=/chainlink/tls/server.key" >> .env
+sed -i '/CHAINLINK_TLS_PORT=0/d' .env
+sed -i '/SECURE_COOKIES=false/d' .env
+```
+Relog into the VM via Google Cloud SDK with updated port 6689
+```
+gcloud compute ssh node --project "project-id" --zone "us-west1-b" --tunnel-through-iap -- -L 6689:localhost:6689
+```
+Start Chainlink node with updated ports
+```
+cd ~/.chainlink && docker run --name node --restart=always -p 6689:6689  -d -v ~/.chainlink:/chainlink -it --env-file=.env smartcontract/chainlink:1.1.0 local n -p /chainlink/.password -a /chainlink/.api
+```
+Login to Chainlink node GUI:
+https://localhost:6689
+
+### 1.6 Setup Ethereum Node Failover
+
+
+
+### 1.7 Deploy Chainlink Failover Node through Docker
+```
+cd ~/.chainlink && docker run --name failover_node --restart=always -p 6687:6689 -d -v ~/.chainlink:/chainlink -it --env-file=.env smartcontract/chainlink:1.1.0 local n -p /chainlink/.password -a /chainlink/.api
+```
+### 1.8 Backup Chainlink Node Gas Wallet
+```
+docker exec -it node /bin/bash
+chainlink admin login
+<GUI email>
+<GUI password>
+```
+Get node public address
+```
+chainlink keys eth list
+```
+Export the key to chainlink node VM
+```
+chainlink keys eth export -p /chainlink/.password -o /chainlink/node_main_key.json <node wallet ethereum public address>
+```
 
 ## References
-
 (1) https://docs.chain.link/docs/running-a-chainlink-node/
 
 (2) https://docs.chain.link/docs/run-an-ethereum-client/
@@ -21,6 +141,4 @@ This guide is intended to provide additional technical guidance to reference the
 
 (8) https://linkriver.io/wp-content/uploads/2021/03/Chainlink_Node_Operations_Research_Paper.pdf
 
-```
-example code block
-```
+
