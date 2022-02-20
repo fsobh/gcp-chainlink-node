@@ -28,7 +28,7 @@ curl -X POST "<http://cloud-function-url>" -H "Content-Type:application/json" --
 ```
 Expected output
 ```
->>{"jobRunID": 653, "data": {"base asset": "ETH", "quote asset": "USD", "price": "2935.86"}, "statusCode": 200}
+{"jobRunID": 653, "data": {"base asset": "ETH", "quote asset": "USD", "price": "2935.86"}, "statusCode": 200}
 ```
 ## [2] Adding external adapter to Chainlink Node as a bridge
 
