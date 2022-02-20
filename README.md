@@ -5,4 +5,6 @@ This guide is intended to provide additional technical literature to reference t
 
 If starting a new GCP project and/or chainlink node, follow this guide in the following order:
 
-(1) OpenVPN Access Server, (2) GCP Chainlink Node Security Hardened, (3) Monitoring Tools, (4) External Adapters
+(1) OpenVPN Access Server, 
+(2) GCP Chainlink Node Security Hardened, 
+(3) External Adapters
