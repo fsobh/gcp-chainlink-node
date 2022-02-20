@@ -239,6 +239,9 @@ curl -g -6 "http://[ipv6-address]/"
 
 
 ## References
-(1) https://openvpn.net/cloud-docs/openvpn-3-client-for-linux/
+(1) https://docs.chain.link/docs/best-security-practices/
 
-(2) https://cloud.google.com/architecture/building-internet-connectivity-for-private-vms#console_1
+(2) https://openvpn.net/cloud-docs/openvpn-3-client-for-linux/
+
+(3) https://cloud.google.com/architecture/building-internet-connectivity-for-private-vms#console_1
+
