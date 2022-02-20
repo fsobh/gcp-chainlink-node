@@ -3,6 +3,8 @@ GCP Chainlink Node Security Hardened
 This guide is intended to provide additional technical guidance to reference the official Chainlink documentation.
 
 
+## References
+
 (1) https://docs.chain.link/docs/running-a-chainlink-node/
 
 (2) https://docs.chain.link/docs/run-an-ethereum-client/
