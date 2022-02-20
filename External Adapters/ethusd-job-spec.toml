@@ -2,7 +2,7 @@ type = "webhook"
 schemaVersion = 1
 name = "ethusd-coingecko-failover-cryptocompare-adapter"
 observationSource = """
-fetch_1        [type=bridge name="coingecko-ethusd-failover-coinpaprika-adapter" requestData="{\\"id\\": $(jobSpec.externalJobID)}"]
+fetch_1       [type=bridge name="coingecko-ethusd-failover-coinpaprika-adapter" requestData="{\\"id\\": $(jobSpec.externalJobID)}"]
 parse_1       [type=jsonparse path="data,price" data="$(fetch_1)"]
 
 fetch_1 -> parse_1
