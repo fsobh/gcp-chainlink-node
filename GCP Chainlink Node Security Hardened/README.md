@@ -29,7 +29,7 @@ exit
 ```
 ### 1.2 Run and sync local Ethereum Node
 ```
-docker run --name eth_node -d --restart unless-stopped -p 8546:8546 -v ~/.geth-rinkeby:/geth -it \
+docker run --name eth -d --restart unless-stopped -p 8546:8546 -v ~/.geth-rinkeby:/geth -it \
            ethereum/client-go --mainnet --ws --ipcdisable \
            --ws.addr 0.0.0.0 --ws.origins="*" --datadir /geth --syncmode full --rpc.gascap=0 --rpc.txfeecap=0
 ```
@@ -118,12 +118,12 @@ ETH_URL=ws://<ip of eth-failover docker container>:4000/
 ```
 Inspect output to ensure connectivity to eth-failover container 
 ```
-cd ~/.chainlink-rinkeby && docker run --name node --restart unless-stopped -p 6689:6689 -v ~/.chainlink-rinkeby:/chainlink -it --env-file=.env smartcontract/chainlink:1.1.0 local n -p /chainlink/.password -a /chainlink/.api
+cd ~/.chainlink && docker run --name node --restart unless-stopped -p 6689:6689 -v ~/.chainlink:/chainlink -it --env-file=.env smartcontract/chainlink:1.1.0 local n -p /chainlink/.password -a /chainlink/.api
 ```
 Test eth-failover container connectivity with local node & failover remote node
 ```
 docker run --name eth-failover -d fiews/cl-eth-failover ws://<eth-local-node-ip>:8546 wss://mainnet.infura.io/ws/v3/<address>
-cd ~/.chainlink-rinkeby && docker run --name node -d --restart unless-stopped -p 6689:6689 -v ~/.chainlink-rinkeby:/chainlink -it --env-file=.env smartcontract/chainlink:1.1.0 local n -p /chainlink/.password -a /chainlink/.api
+cd ~/.chainlink && docker run --name node -d --restart unless-stopped -p 6689:6689 -v ~/.chainlink:/chainlink -it --env-file=.env smartcontract/chainlink:1.1.0 local n -p /chainlink/.password -a /chainlink/.api
 ```
 Disconnect ethereum local node to ensure failover works as intended
 ```
@@ -134,7 +134,7 @@ docker logs --tail 100 <container-id of chainlink node container>
 Restart local ethereum node
 ```
 docker run --name eth -d --restart unless-stopped -p 8546:8546 -v ~/.geth-rinkeby:/geth -it \
-          ethereum/client-go --rinkeby --ws --ipcdisable \
+          ethereum/client-go --mainnet --ws --ipcdisable \
           --ws.addr 0.0.0.0 --ws.origins="*" --datadir /geth --rpc.gascap=0 --rpc.txfeecap=0
 ```
 
