@@ -2,7 +2,7 @@
 
 This guide is intended to work in conjunction with the OpenVPN Access Server guide which should be done before setup of the Chainlink node itself.
 
-This guide operates a chainlink node ```v1.1.0``` (latest at time of writing) with failover which has TLS enabled, local Ethereum node with remote Ethereum node as failover.
+This guide operates a chainlink node ```v1.1.0``` (latest at time of writing) on Ethereum mainnet with failover which has TLS enabled, local Ethereum node with remote Ethereum node as failover.
 
 ## [0] Requirements
 (1) VMs intended to run Chainlink node service has access to the internet
