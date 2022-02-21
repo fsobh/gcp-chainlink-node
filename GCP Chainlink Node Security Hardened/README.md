@@ -177,8 +177,6 @@ chainlink keys eth export -p /chainlink/.password -o /chainlink/node_main_key.js
 
 (7) https://docs.chain.link/docs/configuration-variables/
 
-(8) https://linkriver.io/wp-content/uploads/2021/03/Chainlink_Node_Operations_Research_Paper.pdf
+(8) https://github.com/Fiews/ChainlinkEthFailover
 
-(9) https://github.com/Fiews/ChainlinkEthFailover
-
-
+(9) https://linkriver.io/wp-content/uploads/2021/03/Chainlink_Node_Operations_Research_Paper.pdf
