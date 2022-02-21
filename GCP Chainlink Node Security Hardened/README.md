@@ -143,6 +143,11 @@ docker run --name eth -d --restart unless-stopped -p 8546:8546 -v ~/.geth:/geth 
 ```
 
 ### 1.7 Deploy Chainlink Failover Node through Docker
+Update ```.env``` database locking process
+```
+echo "DATABASE_LOCKING_MODE=lease" >> ~/.chainlink-rinkeby/.env
+```
+Run the failover Chainlink node to ensure uptime during updates/upgrades or fatal errors to the main Chainlink node container
 ```
 cd ~/.chainlink && docker run --name failover_node --restart=always -p 6687:6689 -d -v ~/.chainlink:/chainlink -it --env-file=.env smartcontract/chainlink:1.1.0 local n -p /chainlink/.password -a /chainlink/.api
 ```
