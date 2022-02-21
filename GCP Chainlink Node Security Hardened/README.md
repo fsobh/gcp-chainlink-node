@@ -122,7 +122,7 @@ cd ~/.chainlink-rinkeby && docker run --name node --restart unless-stopped -p 66
 ```
 Test eth-failover container connectivity with local node & failover remote node
 ```
-docker run --name eth-failover -d fiews/cl-eth-failover ws://172.17.0.2:8546 wss://mainnet.infura.io/ws/v3/<address>
+docker run --name eth-failover -d fiews/cl-eth-failover ws://<eth-local-node-ip>:8546 wss://mainnet.infura.io/ws/v3/<address>
 cd ~/.chainlink-rinkeby && docker run --name node -d --restart unless-stopped -p 6689:6689 -v ~/.chainlink-rinkeby:/chainlink -it --env-file=.env smartcontract/chainlink:1.1.0 local n -p /chainlink/.password -a /chainlink/.api
 ```
 Disconnect ethereum local node to ensure failover works as intended
