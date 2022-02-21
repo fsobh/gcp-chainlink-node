@@ -118,7 +118,7 @@ ETH_URL=ws://<ip of eth-failover docker container>:4000/
 ```
 Inspect output to ensure connectivity to eth-failover container 
 ```
-cd ~/.chainlink-rinkeby && docker run --name link-main-node --restart unless-stopped -p 6689:6689 -v ~/.chainlink-rinkeby:/chainlink -it --env-file=.env smartcontract/chainlink:1.1.0 local n -p /chainlink/.password -a /chainlink/.api
+cd ~/.chainlink-rinkeby && docker run --name node --restart unless-stopped -p 6689:6689 -v ~/.chainlink-rinkeby:/chainlink -it --env-file=.env smartcontract/chainlink:1.1.0 local n -p /chainlink/.password -a /chainlink/.api
 ```
 Test eth-failover container connectivity with local node & failover remote node
 ```
