@@ -29,7 +29,7 @@ exit
 ```
 ### 1.2 Run and sync local Ethereum Node
 ```
-docker run --name eth -d --restart unless-stopped -p 8546:8546 -v ~/.geth-rinkeby:/geth -it \
+docker run --name eth -d --restart unless-stopped -p 8546:8546 -v ~/.geth:/geth -it \
            ethereum/client-go --mainnet --ws --ipcdisable \
            --ws.addr 0.0.0.0 --ws.origins="*" --datadir /geth --syncmode full --rpc.gascap=0 --rpc.txfeecap=0
 ```
@@ -133,7 +133,7 @@ docker logs --tail 100 <container-id of chainlink node container>
 ```
 Restart local ethereum node
 ```
-docker run --name eth -d --restart unless-stopped -p 8546:8546 -v ~/.geth-rinkeby:/geth -it \
+docker run --name eth -d --restart unless-stopped -p 8546:8546 -v ~/.geth:/geth -it \
           ethereum/client-go --mainnet --ws --ipcdisable \
           --ws.addr 0.0.0.0 --ws.origins="*" --datadir /geth --rpc.gascap=0 --rpc.txfeecap=0
 ```
