@@ -79,12 +79,16 @@ cd ~/.chainlink && docker run -p 6688:6688 -v ~/.chainlink:/chainlink -it --env-
 Login to Chainlink node GUI:
 http://localhost:6688
 ### 1.5 Enabling HTTPS Connections
+Generate certificate and key
 ```
 mkdir ~/.chainlink/tls
 openssl req -x509 -out  ~/.chainlink/tls/server.crt  -keyout ~/.chainlink/tls/server.key \
   -newkey rsa:2048 -nodes -sha256 -days 365 \
   -subj '/CN=localhost' -extensions EXT -config <( \
    printf "[dn]\nCN=localhost\n[req]\ndistinguished_name = dn\n[EXT]\nsubjectAltName=DNS:localhost\nkeyUsage=digitalSignature\nextendedKeyUsage=serverAuth")
+```
+Update Chainlink node ```.env``` file 
+```
 echo "TLS_CERT_PATH=/chainlink/tls/server.crt
 TLS_KEY_PATH=/chainlink/tls/server.key" >> .env
 sed -i '/CHAINLINK_TLS_PORT=0/d' .env
