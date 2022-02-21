@@ -102,8 +102,41 @@ Login to Chainlink node GUI:
 https://localhost:6689
 
 ### 1.6 Setup Ethereum Node Failover
-
-
+Pull the docker image
+```
+docker pull fiews/cl-eth-failover
+```
+Test eth-failover container connectivity with chainlink node with local ethereum node
+```
+docker run --name eth-failover -d fiews/cl-eth-failover ws://<eth-local-node-ip>:8546
+docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' eth-failover
+>> <ip of eth-failover docker container>
+```
+Update ```ETH_URL``` field in Chainlink node ```.env``` file
+```
+ETH_URL=ws://<ip of eth-failover docker container>:4000/
+```
+Inspect output to ensure connectivity to eth-failover container 
+```
+cd ~/.chainlink-rinkeby && docker run --name link-main-node --restart unless-stopped -p 6689:6689 -v ~/.chainlink-rinkeby:/chainlink -it --env-file=.env smartcontract/chainlink:1.1.0 local n -p /chainlink/.password -a /chainlink/.api
+```
+Test eth-failover container connectivity with local node & failover remote node
+```
+docker run --name eth-failover -d fiews/cl-eth-failover ws://172.17.0.2:8546 wss://mainnet.infura.io/ws/v3/<address>
+cd ~/.chainlink-rinkeby && docker run --name node -d --restart unless-stopped -p 6689:6689 -v ~/.chainlink-rinkeby:/chainlink -it --env-file=.env smartcontract/chainlink:1.1.0 local n -p /chainlink/.password -a /chainlink/.api
+```
+Disconnect ethereum local node to ensure failover works as intended
+```
+docker rm -f eth
+docker logs --tail 100 <container-id of eth-failover container>
+docker logs --tail 100 <container-id of chainlink node container>
+```
+Restart local ethereum node
+```
+docker run --name eth -d --restart unless-stopped -p 8546:8546 -v ~/.geth-rinkeby:/geth -it \
+          ethereum/client-go --rinkeby --ws --ipcdisable \
+          --ws.addr 0.0.0.0 --ws.origins="*" --datadir /geth --rpc.gascap=0 --rpc.txfeecap=0
+```
 
 ### 1.7 Deploy Chainlink Failover Node through Docker
 ```
@@ -141,5 +174,7 @@ chainlink keys eth export -p /chainlink/.password -o /chainlink/node_main_key.js
 (7) https://docs.chain.link/docs/configuration-variables/
 
 (8) https://linkriver.io/wp-content/uploads/2021/03/Chainlink_Node_Operations_Research_Paper.pdf
+
+(9) https://github.com/Fiews/ChainlinkEthFailover
 
 
