@@ -166,6 +166,22 @@ Export the key to chainlink node VM
 ```
 chainlink keys eth export -p /chainlink/.password -o /chainlink/node_main_key.json <node wallet ethereum public address>
 ```
+### 2.0 Basic Monitoring
+Run docker containers with additional log options to output to GCP Logging
+```
+cd ~/.chainlink && docker run --log-driver=gcplogs --name node -d --restart unless-stopped -p 6689:6689 -v ~/.chainlink:/chainlink -it --env-file=.env smartcontract/chainlink:1.1.0 local n -p /chainlink/.password -a /chainlink/.api
+```
+The output of these logs can be found in the GCP GUI > Hamburger menu > Operations > Logging > VM Instance
+
+Exporting & Inspecting the docker logs directly by locating the docker log file
+```
+docker inspect --format='{{.LogPath}}' node
+```
+Download this file using cloud storage solutions to your local machine, and inspection directly of the docker logs is possible
+
+### 2.1 Advanced Monitoring
+Please see the following link which uses Prometheus, Node Exporter, Loki, Promtail, and Grafana all with TLS. This enables a number of notification alerts such as email and telegram with high quality data visualization graphs of the chainlink node and vm machine.
+https://github.com/Linkriver/Chainlink-Prometheus-Grafana-TLS-Monitoring
 
 ## References
 (1) https://docs.chain.link/docs/running-a-chainlink-node/
@@ -184,4 +200,6 @@ chainlink keys eth export -p /chainlink/.password -o /chainlink/node_main_key.js
 
 (8) https://github.com/Fiews/ChainlinkEthFailover
 
-(9) https://linkriver.io/wp-content/uploads/2021/03/Chainlink_Node_Operations_Research_Paper.pdf
+(9) https://github.com/Linkriver/Chainlink-Prometheus-Grafana-TLS-Monitoring
+
+(10) https://linkriver.io/wp-content/uploads/2021/03/Chainlink_Node_Operations_Research_Paper.pdf
