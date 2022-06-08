@@ -48,7 +48,7 @@ def slack_send_channel_automated_message(titleMessageDict,state):
     else:
         color="#9733EE" #red
     #alerts-link-eth-rinkeby
-    url = "https://hooks.slack.com/services/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"
+    url = "https://hooks.slack.com/services/...."
     slack_data = {
         "username": "NotificationBot",
         "icon_emoji": ":satellite:",
