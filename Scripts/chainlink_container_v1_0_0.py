@@ -90,7 +90,7 @@ def slack_send_channel_automated_message(dict,titleMessageDict,state):
         color="#7bf538" #green
     else:
         color="#9733EE" #red
-    #alerts-link-eth-rinkeby
+
     url = "{}".format(dict["slack_channel_webhook_url"])
     slack_data = {
         "username": "NotificationBot",
