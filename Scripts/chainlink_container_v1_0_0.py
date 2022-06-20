@@ -6,7 +6,7 @@ import time
 import json
 import requests
 
-operating_dict = {'Username':'commander',
+operating_dict = {'Username':'username',
                     'Main Network':'poly', #eth, poly, arb, bsc
                     'Network':'mumbai'} #mumbai, rinkeby
 
