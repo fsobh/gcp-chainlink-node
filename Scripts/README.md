@@ -19,7 +19,7 @@ Then run the script via:
 ./chainlink_container_v1_0_0.py Start Main
 ```
 
-#### Scheduling the Slack Message Bot using `crontab`
+#### Scheduling the script using `crontab`
 
 Open the servers crontab via:
 ```
