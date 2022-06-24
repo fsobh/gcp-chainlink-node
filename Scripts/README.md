@@ -26,7 +26,7 @@ Open the servers crontab via:
 crontab -e
 ```
 
-Add the following to schedule the Slack Message Bot to send automated messages everyday at midnight:
+Add the following to schedule the script to restart both Main & Failover Chainlink containers and alert messages to Slack everyday at midnight:
 ```
 0 0 * * * ./chainlink_container_v1_0_0.py Restart Main
 0 0 * * * ./chainlink_container_v1_0_0.py Restart Failover
