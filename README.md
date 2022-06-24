@@ -15,9 +15,9 @@ If starting a new GCP project and/or chainlink node, follow this guide in the fo
 
 ## Folder Structure 
 ```
-╠═ External Adapters - Guide to Google Cloud Function with external adapter python script and utilizing webhook to test POST generated API endpoint 
+╠═ External Adapters - Guide to Google Cloud Function with external adapter python script with webhook bridge test
 ║
-╠═ GCP Chainlink Node Security Hardened - Guide to booting a Chainlink Node within GCP with built in security features
+╠═ GCP Chainlink Node Security Hardened - Guide to booting a Chainlink Node within GCP with security features
 ║
 ╠═ OpenVPN Access Server - Guide to starting OpenVPN Access Server & Configuration infront of Chainlink Node
 ║
