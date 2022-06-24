@@ -8,3 +8,6 @@ If starting a new GCP project and/or chainlink node, follow this guide in the fo
 (1) OpenVPN Access Server, 
 (2) GCP Chainlink Node Security Hardened, 
 (3) External Adapters
+(4) Scripts
+
+
