@@ -108,12 +108,10 @@ def slack_send_channel_automated_message(dict,titleMessageDict,state):
         raise Exception(response.status_code, response.text)
 
 def get_current_dateTime():
-    # mm/dd/y
+    # dd/mm/y
     named_tuple = time.localtime() # get struct_time
     naked_time_string = time.strftime("%d%m%YT%H%M%S", named_tuple)
     time_string = time.strftime("%d/%m/%YT%H:%M:%S", named_tuple)
-    #print(naked_time_string)
-    #print(time_string)
     return (naked_time_string,time_string)
 ##########################################################################################################################################################################
 def run_main_function():
