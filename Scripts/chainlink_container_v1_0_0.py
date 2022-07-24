@@ -7,15 +7,10 @@ import json
 import requests
 
 operating_dict = {'Username':'username',
-                    'Main Network':'poly', #eth, poly, arb, bsc
-                    'Network':'mumbai'} #mumbai, rinkeby
+                    'Main Network':'eth', #eth, poly, arb, bsc
+                    'Network':'mainnet'} #mumbai, rinkeby, mainnet
 
-slack_webhook_dict={"alerts-link-eth-mainnet":"https://hooks.slack.com/services/..../..../....",
-                    "alerts-link-poly-mainnet":"https://hooks.slack.com/services/..../..../....",
-                    "alerts-link-bsc-mainnet":"https://hooks.slack.com/services/..../..../....",
-                    "alerts-link-eth-rinkeby":"https://hooks.slack.com/services/..../..../....",
-                    "alerts-link-poly-mumbai":"https://hooks.slack.com/services/..../..../....",
-                    "alerts-link-arb-rinkeby":"https://hooks.slack.com/services/..../..../...."}
+slack_webhook_dict={"alerts-link-eth-mainnet":"https://hooks.slack.com/services/..../..../...."}
 
 input_dict = {'Main Container Name': 'link-main-node',
                 'Failover Container Name': 'link-failover-node',
@@ -25,7 +20,7 @@ input_dict = {'Main Container Name': 'link-main-node',
                 'Target Working Parent Directory Path': '/home/{}/'.format(operating_dict['Username']),
                 'Working Directory Name': '.chainlink-{}'.format(operating_dict['Network']),
                 'Main Container .env': '.env',
-                'Failover Container .env': '.env-failover',
+                'Failover Container .env': '.env',
                 'Keystore Password Directory Path': '.password',
                 'API Directory Path': '.api',
                 'Chainlink Node Version':'1.1.0',
@@ -42,7 +37,6 @@ def start_chainlink_docker_container(script_input_2,inputDict):
 
         linux_command="docker run --name {} -d -p {}:6689 -v {}{}:/chainlink -it --env-file={} smartcontract/chainlink:{} local n -p /chainlink/{} -a /chainlink/{}".format(docker_container_name,docker_container_port,inputDict['Target Working Parent Directory Path'],inputDict['Working Directory Name'],docker_container_env,inputDict['Chainlink Node Version'],inputDict['Keystore Password Directory Path'],inputDict['API Directory Path'])
 
-        #print(linux_command)
         docker_container_restart_status=subprocess.getoutput('{}'.format(linux_command))
         (nakedTimeString,timeString)=get_current_dateTime()
         if (len(docker_container_restart_status)==int(64)):
@@ -82,7 +76,6 @@ def determine_title():
 def populate_title_and_message(title,message):
     title_and_message_dict={"title_fixed" : "{}".format(title),
                             "message_fixed" : "{}".format(message)}
-    #print("{}".format(title_and_message_dict["title_fixed"]))
     return (title_and_message_dict)
 
 def slack_send_channel_automated_message(dict,titleMessageDict,state):
@@ -95,7 +88,6 @@ def slack_send_channel_automated_message(dict,titleMessageDict,state):
     slack_data = {
         "username": "NotificationBot",
         "icon_emoji": ":satellite:",
-        #"channel" : "#somerandomcahnnel",
         "attachments": [
             {
                 "color": "{}".format(color), #9733EE=red,#7bf538=green
